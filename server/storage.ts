@@ -69,6 +69,8 @@ export class MemStorage implements IStorage {
       isActive: insertEvent.isActive !== undefined ? insertEvent.isActive : true,
       createdAt: new Date(),
       initialFiles: insertEvent.initialFiles ? [...insertEvent.initialFiles] : null,
+      initialStoragePath: insertEvent.initialStoragePath || null,
+      submissionStoragePath: insertEvent.submissionStoragePath || null,
     };
     this.events.set(id, event);
     
@@ -92,6 +94,8 @@ export class MemStorage implements IStorage {
       initialFiles: updateEvent.initialFiles ? 
         [...updateEvent.initialFiles] : 
         event.initialFiles,
+      initialStoragePath: updateEvent.initialStoragePath ?? event.initialStoragePath ?? null,
+      submissionStoragePath: updateEvent.submissionStoragePath ?? event.submissionStoragePath ?? null,
     };
     this.events.set(id, updatedEvent);
     return updatedEvent;

@@ -10,6 +10,8 @@ export const events = pgTable("events", {
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   initialFiles: json("initial_files").$type<string[]>(),
+  initialStoragePath: text("initial_storage_path"),
+  submissionStoragePath: text("submission_storage_path"),
 });
 
 export const submissions = pgTable("submissions", {
@@ -60,6 +62,8 @@ export type InsertActivity = z.infer<typeof insertActivitySchema>;
 export type EventWithStats = Event & {
   submissionCount: number;
   totalExpected?: number;
+  initialStoragePath?: string | null;
+  submissionStoragePath?: string | null;
 };
 
 export type DashboardStats = {

@@ -23,6 +23,8 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [password, setPassword] = useState("");
+  const [initialStoragePath, setInitialStoragePath] = useState("");
+  const [submissionStoragePath, setSubmissionStoragePath] = useState("");
   const [initialFiles, setInitialFiles] = useState<File[]>([]);
   const { toast } = useToast();
 
@@ -40,6 +42,8 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
         formData.append("deadline", deadline);
         formData.append("password", password);
         formData.append("isActive", "true");
+        if (initialStoragePath) formData.append("initialStoragePath", initialStoragePath);
+        if (submissionStoragePath) formData.append("submissionStoragePath", submissionStoragePath);
         
         initialFiles.forEach(file => {
           formData.append("initialFiles", file);
@@ -69,6 +73,8 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
             deadline,
             password,
             isActive: true,
+            initialStoragePath: initialStoragePath || undefined,
+            submissionStoragePath: submissionStoragePath || undefined,
           }),
         });
 
@@ -90,6 +96,8 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
       setDeadline("");
       setPassword("");
       setInitialFiles([]);
+      setInitialStoragePath("");
+      setSubmissionStoragePath("");
       onOpenChange(false);
       
       toast({
@@ -187,6 +195,28 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+            />
+          </div>
+          
+          <div>
+            <Label htmlFor="initial-storage-path">초기 자료 저장 경로</Label>
+            <Input
+              id="initial-storage-path"
+              type="text"
+              placeholder="예: C:\\Data\\Initial"
+              value={initialStoragePath}
+              onChange={(e) => setInitialStoragePath(e.target.value)}
+            />
+          </div>
+          
+          <div>
+            <Label htmlFor="submission-storage-path">제출 자료 저장 경로</Label>
+            <Input
+              id="submission-storage-path"
+              type="text"
+              placeholder="예: C:\\Data\\Submissions"
+              value={submissionStoragePath}
+              onChange={(e) => setSubmissionStoragePath(e.target.value)}
             />
           </div>
           

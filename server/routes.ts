@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import multer from "multer";
 import { storage } from "./storage";
 import { insertEventSchema, insertSubmissionSchema } from "@shared/schema";
+import fs from "fs";
+import path from "path";
 
 const upload = multer({ 
   storage: multer.memoryStorage(),
@@ -81,9 +83,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Handle initial files if any
       const initialFiles: string[] = [];
       if (req.files && Array.isArray(req.files)) {
-        for (const file of req.files) {
+        for (const file of req.files as Express.Multer.File[]) {
           const filename = await storage.saveFile(file.originalname, file.buffer);
           initialFiles.push(filename);
+          // Copy to user-specified directory if provided
+          if (validatedData.initialStoragePath) {
+            try {
+              fs.mkdirSync(validatedData.initialStoragePath, { recursive: true });
+              const targetPath = path.join(validatedData.initialStoragePath, filename);
+              fs.writeFileSync(targetPath, file.buffer);
+            } catch (err) {
+              console.error("Failed to copy initial file to directory", err);
+            }
+          }
         }
       }
       
@@ -137,10 +149,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Handle uploaded files
       const files: string[] = [];
+      const buffersWithNames: { filename: string; buffer: Buffer }[] = [];
       if (req.files && Array.isArray(req.files)) {
-        for (const file of req.files) {
+        for (const file of req.files as Express.Multer.File[]) {
           const filename = await storage.saveFile(file.originalname, file.buffer);
           files.push(filename);
+          buffersWithNames.push({ filename, buffer: file.buffer });
+        }
+      }
+      
+      // Save to designated directory
+      const event = await storage.getEvent(validatedData.eventId);
+      if (event?.submissionStoragePath) {
+        try {
+          fs.mkdirSync(event.submissionStoragePath, { recursive: true });
+          for (const item of buffersWithNames) {
+            const targetPath = path.join(event.submissionStoragePath, item.filename);
+            fs.writeFileSync(targetPath, item.buffer);
+          }
+        } catch (err) {
+          console.error("Failed to copy submission files", err);
         }
       }
       
@@ -151,7 +179,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.status(201).json(submission);
     } catch (error) {
-      res.status(400).json({ message: "Invalid submission data", error: error.message });
+      res.status(400).json({ message: "Invalid submission data", error: (error as any).message });
     }
   });
 

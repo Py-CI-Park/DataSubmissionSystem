@@ -90,6 +90,16 @@ export default function EventsList() {
                     <div className="flex-1">
                       <h4 className="font-medium text-slate-900 mb-1">{event.title}</h4>
                       <p className="text-sm text-slate-600">{event.description}</p>
+                      {event.submissionStoragePath && (
+                        <a
+                          href={`file://${event.submissionStoragePath.replace(/\\/g, '/')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs text-blue-600 underline mt-1"
+                        >
+                          저장 경로 열기
+                        </a>
+                      )}
                     </div>
                     <Badge variant={status.variant}>
                       {status.label}

@@ -1,0 +1,155 @@
+{
+  "timestamp": "2025-06-29T01:03:32.516Z",
+  "tests": [
+    {
+      "name": "페이지 로드",
+      "status": "PASS",
+      "details": "제목: 자료 제출 관리 시스템",
+      "timestamp": "2025-06-29T01:03:34.465Z"
+    },
+    {
+      "name": "헤더 제목",
+      "status": "PASS",
+      "details": "제목: 자료 제출 시스템",
+      "timestamp": "2025-06-29T01:03:34.576Z"
+    },
+    {
+      "name": "관리자 버튼",
+      "status": "PASS",
+      "details": "관리자 버튼 발견됨",
+      "timestamp": "2025-06-29T01:03:34.582Z"
+    },
+    {
+      "name": "비밀번호 입력",
+      "status": "PASS",
+      "details": "비밀번호 0000 입력됨",
+      "timestamp": "2025-06-29T01:03:37.297Z"
+    },
+    {
+      "name": "로그인 버튼 클릭",
+      "status": "PASS",
+      "details": "로그인 버튼 클릭됨",
+      "timestamp": "2025-06-29T01:03:40.164Z"
+    },
+    {
+      "name": "대시보드 - 대시보드 제목",
+      "status": "PASS",
+      "details": "요소 발견됨",
+      "timestamp": "2025-06-29T01:03:40.259Z"
+    },
+    {
+      "name": "대시보드 - 이벤트 섹션",
+      "status": "PASS",
+      "details": "요소 발견됨",
+      "timestamp": "2025-06-29T01:03:40.262Z"
+    },
+    {
+      "name": "대시보드 - 통계 섹션",
+      "status": "FAIL",
+      "details": "요소를 찾을 수 없음",
+      "timestamp": "2025-06-29T01:03:40.264Z"
+    },
+    {
+      "name": "대시보드 - 버튼 요소",
+      "status": "PASS",
+      "details": "요소 발견됨",
+      "timestamp": "2025-06-29T01:03:40.268Z"
+    },
+    {
+      "name": "이벤트 생성 버튼",
+      "status": "FAIL",
+      "details": "이벤트 생성 버튼을 찾을 수 없음",
+      "timestamp": "2025-06-29T01:03:40.352Z"
+    },
+    {
+      "name": "API - 이벤트 API",
+      "status": "PASS",
+      "details": "상태: 200",
+      "timestamp": "2025-06-29T01:03:40.386Z"
+    },
+    {
+      "name": "API - 헬스 체크 API",
+      "status": "PASS",
+      "details": "상태: 200",
+      "timestamp": "2025-06-29T01:03:40.400Z"
+    },
+    {
+      "name": "반응형 - 데스크톱",
+      "status": "PASS",
+      "details": "1920x1080",
+      "timestamp": "2025-06-29T01:03:40.930Z"
+    },
+    {
+      "name": "반응형 - 태블릿",
+      "status": "PASS",
+      "details": "768x1024",
+      "timestamp": "2025-06-29T01:03:41.577Z"
+    },
+    {
+      "name": "반응형 - 모바일",
+      "status": "PASS",
+      "details": "375x667",
+      "timestamp": "2025-06-29T01:03:42.191Z"
+    },
+    {
+      "name": "키보드 네비게이션",
+      "status": "PASS",
+      "details": "탭 키로 포커스 이동 가능",
+      "timestamp": "2025-06-29T01:03:43.405Z"
+    },
+    {
+      "name": "이미지 alt 텍스트",
+      "status": "PASS",
+      "details": "0/0 이미지에 alt 텍스트 있음",
+      "timestamp": "2025-06-29T01:03:43.408Z"
+    },
+    {
+      "name": "페이지 로드 시간",
+      "status": "PASS",
+      "details": "1376ms",
+      "timestamp": "2025-06-29T01:03:44.784Z"
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "main-page",
+      "filename": "test-main-page-1751159014465.png",
+      "description": "메인 페이지 로드 완료"
+    },
+    {
+      "name": "admin-login",
+      "filename": "test-admin-login-1751159020165.png",
+      "description": "관리자 로그인 완료"
+    },
+    {
+      "name": "dashboard",
+      "filename": "test-dashboard-1751159020268.png",
+      "description": "대시보드 화면"
+    },
+    {
+      "name": "responsive-데스크톱",
+      "filename": "test-responsive-데스크톱-1751159020930.png",
+      "description": "데스크톱 뷰포트"
+    },
+    {
+      "name": "responsive-태블릿",
+      "filename": "test-responsive-태블릿-1751159021577.png",
+      "description": "태블릿 뷰포트"
+    },
+    {
+      "name": "responsive-모바일",
+      "filename": "test-responsive-모바일-1751159022191.png",
+      "description": "모바일 뷰포트"
+    },
+    {
+      "name": "final-state",
+      "filename": "test-final-state-1751159024784.png",
+      "description": "최종 테스트 완료 상태"
+    }
+  ],
+  "summary": {
+    "total": 18,
+    "passed": 16,
+    "failed": 2
+  }
+}
