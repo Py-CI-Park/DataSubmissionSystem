@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   Dialog,
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { FolderOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient } from "@/lib/queryClient";
 
@@ -27,6 +28,17 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
   const [submissionStoragePath, setSubmissionStoragePath] = useState("");
   const [initialFiles, setInitialFiles] = useState<File[]>([]);
   const { toast } = useToast();
+
+  // 모달이 열릴 때 기본값 설정
+  useEffect(() => {
+    if (open) {
+      // 내일 날짜 + 오후 5시 설정
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowDate = tomorrow.toISOString().split('T')[0];
+      setDeadline(`${tomorrowDate}T17:00`);
+    }
+  }, [open]);
 
   const createEventMutation = useMutation({
     mutationFn: async () => {
@@ -117,6 +129,38 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return;
     setInitialFiles(Array.from(files));
+    
+    // 초기 자료 파일 선택 시 자동으로 저장 경로 설정
+    if (files.length > 0 && !initialStoragePath) {
+      const defaultPath = "C:\\Data\\Initial";
+      setInitialStoragePath(defaultPath);
+    }
+  };
+
+  const handleFolderSelect = async (type: 'initial' | 'submission') => {
+    try {
+      // File System Access API 지원 확인
+      if ('showDirectoryPicker' in window) {
+        const dirHandle = await (window as any).showDirectoryPicker();
+        const path = dirHandle.name; // 실제로는 더 복잡한 경로 처리가 필요할 수 있음
+        
+        if (type === 'initial') {
+          setInitialStoragePath(path);
+        } else {
+          setSubmissionStoragePath(path);
+        }
+      } else {
+        // 폴더 선택이 지원되지 않는 경우 대체 방법
+        toast({
+          title: "폴더 선택 불가",
+          description: "브라우저에서 폴더 선택을 지원하지 않습니다. 직접 경로를 입력해주세요.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      // 사용자가 취소한 경우 등
+      console.log("폴더 선택이 취소되었습니다.");
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -128,12 +172,12 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>새 이벤트 생성</DialogTitle>
+          <DialogTitle className="dark:text-slate-100">새 이벤트 생성</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="title">이벤트 제목</Label>
+            <Label htmlFor="title" className="dark:text-slate-200">이벤트 제목</Label>
             <Input
               id="title"
               type="text"
@@ -145,7 +189,7 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
           </div>
           
           <div>
-            <Label htmlFor="description">설명</Label>
+            <Label htmlFor="description" className="dark:text-slate-200">설명</Label>
             <Textarea
               id="description"
               rows={3}
@@ -157,7 +201,7 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
           </div>
           
           <div>
-            <Label htmlFor="deadline">마감일</Label>
+            <Label htmlFor="deadline" className="dark:text-slate-200">마감일</Label>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Input
@@ -165,7 +209,7 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
                   type="date"
                   value={deadline.split('T')[0] || ''}
                   onChange={(e) => {
-                    const timeValue = deadline.split('T')[1] || '23:59';
+                    const timeValue = deadline.split('T')[1] || '17:00';
                     setDeadline(`${e.target.value}T${timeValue}`);
                   }}
                   required
@@ -175,7 +219,7 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
                 <Input
                   id="deadline-time"
                   type="time"
-                  value={deadline.split('T')[1] || '23:59'}
+                  value={deadline.split('T')[1] || '17:00'}
                   onChange={(e) => {
                     const dateValue = deadline.split('T')[0] || new Date().toISOString().split('T')[0];
                     setDeadline(`${dateValue}T${e.target.value}`);
@@ -187,7 +231,7 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
           </div>
           
           <div>
-            <Label htmlFor="password">생성 비밀번호</Label>
+            <Label htmlFor="password" className="dark:text-slate-200">생성 비밀번호</Label>
             <Input
               id="password"
               type="password"
@@ -199,40 +243,60 @@ export default function EventCreationModal({ open, onOpenChange }: EventCreation
           </div>
           
           <div>
-            <Label htmlFor="initial-storage-path">초기 자료 저장 경로</Label>
-            <Input
-              id="initial-storage-path"
-              type="text"
-              placeholder="예: C:\\Data\\Initial"
-              value={initialStoragePath}
-              onChange={(e) => setInitialStoragePath(e.target.value)}
-            />
+            <Label htmlFor="initial-storage-path" className="dark:text-slate-200">초기 자료 저장 경로</Label>
+            <div className="flex gap-2">
+              <Input
+                id="initial-storage-path"
+                type="text"
+                placeholder="예: C:\\Data\\Initial"
+                value={initialStoragePath}
+                onChange={(e) => setInitialStoragePath(e.target.value)}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleFolderSelect('initial')}
+              >
+                <FolderOpen className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           
           <div>
-            <Label htmlFor="submission-storage-path">제출 자료 저장 경로</Label>
-            <Input
-              id="submission-storage-path"
-              type="text"
-              placeholder="예: C:\\Data\\Submissions"
-              value={submissionStoragePath}
-              onChange={(e) => setSubmissionStoragePath(e.target.value)}
-            />
+            <Label htmlFor="submission-storage-path" className="dark:text-slate-200">제출 자료 저장 경로</Label>
+            <div className="flex gap-2">
+              <Input
+                id="submission-storage-path"
+                type="text"
+                placeholder="예: C:\\Data\\Submissions"
+                value={submissionStoragePath}
+                onChange={(e) => setSubmissionStoragePath(e.target.value)}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleFolderSelect('submission')}
+              >
+                <FolderOpen className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           
           <div>
-            <Label htmlFor="initial-files">초기 자료 (선택)</Label>
+            <Label htmlFor="initial-files" className="dark:text-slate-200">초기 자료 (선택)</Label>
             <Input
               id="initial-files"
               type="file"
               multiple
               onChange={(e) => handleFileSelect(e.target.files)}
             />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               최대 50MB, 모든 파일 형식 지원
             </p>
             {initialFiles.length > 0 && (
-              <p className="text-xs text-slate-600 mt-1">
+              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
                 {initialFiles.length}개 파일 선택됨
               </p>
             )}

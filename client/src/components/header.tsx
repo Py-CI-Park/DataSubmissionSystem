@@ -1,12 +1,14 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { FileUp, Shield } from "lucide-react";
+import { FileUp, Shield, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
 
 export default function Header() {
   const [location] = useLocation();
+  const { theme, setTheme } = useTheme();
 
   return (
-    <header className="bg-white shadow-sm border-b border-slate-200">
+    <header className="bg-white dark:bg-slate-900 shadow-sm border-b border-slate-200 dark:border-slate-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
@@ -14,10 +16,22 @@ export default function Header() {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <FileUp className="h-4 w-4 text-primary-foreground" />
               </div>
-              <h1 className="text-xl font-semibold text-slate-900">자료 제출 시스템</h1>
+              <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">자료 제출 시스템</h1>
             </Link>
           </div>
           <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "light" ? (
+                <Moon className="h-4 w-4" />
+              ) : (
+                <Sun className="h-4 w-4" />
+              )}
+            </Button>
+            <div className="h-6 w-px bg-slate-300 dark:bg-slate-600"></div>
             <Link href="/">
               <Button 
                 variant={location === "/" ? "secondary" : "ghost"} 
@@ -26,7 +40,7 @@ export default function Header() {
                 이벤트 목록
               </Button>
             </Link>
-            <div className="h-6 w-px bg-slate-300"></div>
+            <div className="h-6 w-px bg-slate-300 dark:bg-slate-600"></div>
             <Link href="/admin">
               <Button variant="default" size="sm">
                 <Shield className="h-4 w-4 mr-2" />

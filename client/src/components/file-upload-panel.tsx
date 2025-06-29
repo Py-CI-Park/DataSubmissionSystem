@@ -18,7 +18,6 @@ export default function FileUploadPanel({ preSelectedEventId }: FileUploadPanelP
   const [selectedEventId, setSelectedEventId] = useState<string>("");
   const [submitterName, setSubmitterName] = useState("");
   const [submitterDepartment, setSubmitterDepartment] = useState("");
-  const [submitterContact, setSubmitterContact] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
   const { toast } = useToast();
@@ -44,9 +43,6 @@ export default function FileUploadPanel({ preSelectedEventId }: FileUploadPanelP
       formData.append("eventId", selectedEventId);
       formData.append("submitterName", submitterName);
       formData.append("submitterDepartment", submitterDepartment);
-      if (submitterContact) {
-        formData.append("submitterContact", submitterContact);
-      }
       
       selectedFiles.forEach(file => {
         formData.append("files", file);
@@ -72,7 +68,6 @@ export default function FileUploadPanel({ preSelectedEventId }: FileUploadPanelP
       setSelectedEventId("");
       setSubmitterName("");
       setSubmitterDepartment("");
-      setSubmitterContact("");
       setSelectedFiles([]);
       
       toast({
@@ -132,12 +127,12 @@ export default function FileUploadPanel({ preSelectedEventId }: FileUploadPanelP
   return (
     <Card id="upload-section">
       <CardContent className="p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-6">자료 제출</h3>
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">자료 제출</h3>
         
         <div className="space-y-4">
           {!preSelectedEventId && (
             <div>
-              <Label htmlFor="event-select" className="text-sm font-medium text-slate-700 mb-2">
+              <Label htmlFor="event-select" className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 이벤트 선택
               </Label>
               <Select value={selectedEventId} onValueChange={setSelectedEventId}>
@@ -156,7 +151,7 @@ export default function FileUploadPanel({ preSelectedEventId }: FileUploadPanelP
           )}
 
           <div>
-            <Label className="text-sm font-medium text-slate-700 mb-2">제출자 정보</Label>
+            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">제출자 정보</Label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Input
                 type="text"
@@ -166,33 +161,25 @@ export default function FileUploadPanel({ preSelectedEventId }: FileUploadPanelP
               />
               <Input
                 type="text"
-                placeholder="부서 *"
+                placeholder="팀 또는 파트 *"
                 value={submitterDepartment}
                 onChange={(e) => setSubmitterDepartment(e.target.value)}
-              />
-            </div>
-            <div className="mt-3">
-              <Input
-                type="text"
-                placeholder="연락처 (선택)"
-                value={submitterContact}
-                onChange={(e) => setSubmitterContact(e.target.value)}
               />
             </div>
           </div>
 
           <div>
-            <Label className="text-sm font-medium text-slate-700 mb-2">파일 업로드</Label>
+            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">파일 업로드</Label>
             <div
               className={`upload-area border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                isDragOver ? "border-primary bg-primary/10" : "border-slate-300"
+                isDragOver ? "border-primary bg-primary/10" : "border-slate-300 dark:border-slate-600"
               }`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
             >
               <CloudUpload className="h-8 w-8 text-slate-400 mb-2 mx-auto" />
-              <p className="text-sm text-slate-600 mb-2">파일을 드래그하거나 클릭하여 업로드</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">파일을 드래그하거나 클릭하여 업로드</p>
               <p className="text-xs text-slate-500 mb-3">최대 50MB, 모든 파일 형식 지원</p>
               <input
                 type="file"
@@ -213,10 +200,10 @@ export default function FileUploadPanel({ preSelectedEventId }: FileUploadPanelP
 
             {selectedFiles.length > 0 && (
               <div className="mt-4 space-y-2">
-                <Label className="text-sm font-medium text-slate-700">선택된 파일</Label>
+                <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">선택된 파일</Label>
                 {selectedFiles.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 bg-slate-50 rounded-lg">
-                    <span className="text-sm text-slate-700 truncate">{file.name}</span>
+                  <div key={index} className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                    <span className="text-sm text-slate-700 dark:text-slate-300 truncate">{file.name}</span>
                     <Button
                       type="button"
                       variant="ghost"
@@ -248,7 +235,6 @@ export default function FileUploadPanel({ preSelectedEventId }: FileUploadPanelP
                 setSelectedEventId("");
                 setSubmitterName("");
                 setSubmitterDepartment("");
-                setSubmitterContact("");
                 setSelectedFiles([]);
               }}
             >

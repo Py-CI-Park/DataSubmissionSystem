@@ -45,9 +45,9 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       queryFn: getQueryFn({ on401: "throw" }),
-      refetchInterval: false,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
+      refetchInterval: 30000, // 30초마다 자동 새로고침
+      refetchOnWindowFocus: true,
+      staleTime: 5 * 60 * 1000, // 5분
       retry: false,
     },
     mutations: {

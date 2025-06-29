@@ -47,28 +47,28 @@ export default function Dashboard() {
     const selectedEvent = events?.find(e => e.id === selectedEventId);
     
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <Header />
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-6">
             <button
               onClick={() => setSelectedEventId(null)}
-              className="text-sm text-slate-600 hover:text-slate-800 mb-4"
+              className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 mb-4"
             >
               ← 이벤트 목록으로 돌아가기
             </button>
             {selectedEvent && (
-              <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 mb-6 shadow-sm">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-2">{selectedEvent.title}</h2>
-                    <p className="text-slate-600">{selectedEvent.description}</p>
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">{selectedEvent.title}</h2>
+                    <p className="text-slate-600 dark:text-slate-400">{selectedEvent.description}</p>
                   </div>
                   <Badge variant={getEventStatus(new Date(selectedEvent.deadline)).variant}>
                     {getEventStatus(new Date(selectedEvent.deadline)).label}
                   </Badge>
                 </div>
-                <div className="flex items-center space-x-6 text-sm text-slate-500">
+                <div className="flex items-center space-x-6 text-sm text-slate-500 dark:text-slate-400">
                   <div className="flex items-center">
                     <Clock className="h-4 w-4 mr-1" />
                     <span>{format(new Date(selectedEvent.deadline), 'yyyy.MM.dd HH:mm', { locale: ko })}까지</span>
@@ -90,18 +90,18 @@ export default function Dashboard() {
   const activeEvents = events?.filter(event => event.isActive) || [];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Header />
       
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">자료 제출 시스템</h1>
-          <p className="text-lg text-slate-600">회사 자료를 쉽고 빠르게 제출하고 관리하세요</p>
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">자료 제출 시스템</h1>
+          <p className="text-lg text-slate-600 dark:text-slate-400">회사 자료를 쉽고 빠르게 제출하고 관리하세요</p>
         </div>
 
         {isLoading ? (
           <div className="text-center">
-            <p className="text-slate-500">이벤트를 불러오는 중...</p>
+            <p className="text-slate-500 dark:text-slate-400">이벤트를 불러오는 중...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -112,7 +112,7 @@ export default function Dashboard() {
                 <button
                   key={event.id}
                   onClick={() => handleEventClick(event.id)}
-                  className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary text-left"
+                  className="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary text-left"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
@@ -122,9 +122,9 @@ export default function Dashboard() {
                       {status.label}
                     </Badge>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2 line-clamp-2">{event.title}</h3>
-                  <p className="text-sm text-slate-600 mb-4 line-clamp-2">{event.description}</p>
-                  <div className="space-y-2 text-xs text-slate-500">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 line-clamp-2">{event.title}</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">{event.description}</p>
+                  <div className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
                     <div className="flex items-center">
                       <Clock className="h-3 w-3 mr-1" />
                       <span>{format(new Date(event.deadline), 'MM.dd HH:mm', { locale: ko })}</span>
@@ -141,14 +141,14 @@ export default function Dashboard() {
             {/* 새 이벤트 생성 버튼 */}
             <button
               onClick={handleCreateEvent}
-              className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-dashed border-slate-300 hover:border-emerald-500"
+              className="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-emerald-500 dark:hover:border-emerald-500"
             >
               <div className="text-center">
-                <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-100 transition-colors">
-                  <Plus className="h-8 w-8 text-emerald-600" />
+                <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/50 transition-colors">
+                  <Plus className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">새 이벤트</h3>
-                <p className="text-sm text-slate-600">새로운 제출 이벤트를 만드세요</p>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">새 이벤트</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">새로운 제출 이벤트를 만드세요</p>
               </div>
             </button>
           </div>
@@ -156,7 +156,7 @@ export default function Dashboard() {
 
         {activeEvents.length === 0 && !isLoading && (
           <div className="text-center mt-8">
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               아직 생성된 이벤트가 없습니다. 새 이벤트를 만들어보세요.
             </p>
           </div>

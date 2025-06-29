@@ -182,3 +182,62 @@ MIT License - see LICENSE file for details
 ---
 
 **Made with ❤️ for efficient data submission management**
+
+## 🗄️ 데이터베이스
+
+이 시스템은 **SQLite 데이터베이스**를 사용하여 모든 데이터를 로컬에 저장합니다:
+- 📁 `database.db`: 메인 데이터베이스 파일
+- 📁 `database.db-wal`: Write-Ahead Logging 파일
+- 📁 `database.db-shm`: 공유 메모리 파일
+
+### 데이터베이스 구조
+
+1. **events** - 이벤트 정보
+   - 이벤트 제목, 설명, 마감일
+   - 초기 자료 및 제출 자료 저장 경로
+   - 활성 상태 관리
+
+2. **submissions** - 제출 정보
+   - 제출자 정보 (이름, 팀/파트)
+   - 제출된 파일 목록
+   - 제출 시간
+
+3. **activities** - 활동 로그
+   - 이벤트 생성, 파일 제출 등의 활동 기록
+
+4. **files** - 파일 저장
+   - 업로드된 파일의 바이너리 데이터
+   - 파일 메타데이터 (이름, 크기, 타입)
+
+## 🛠️ 데이터베이스 관리
+
+### GUI 데이터베이스 관리 도구
+```bash
+# 데이터베이스 관리 도구 실행 (SQLite3 명령어 포함)
+db-manager.bat
+```
+
+### 데이터베이스 스크립트
+```bash
+# 마이그레이션 파일 생성
+npm run db:generate
+
+# 마이그레이션 실행
+npm run db:migrate
+
+# 스키마를 데이터베이스에 직접 푸시
+npm run db:push
+
+# Drizzle Studio로 데이터베이스 관리
+npm run db:studio
+```
+
+### 데이터베이스 백업
+SQLite 파일을 직접 복사하거나 관리 도구를 사용하여 백업할 수 있습니다:
+```bash
+# 백업 생성
+copy database.db database_backup_20241201.db
+
+# 복원
+copy database_backup_20241201.db database.db
+```

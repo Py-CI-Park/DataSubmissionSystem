@@ -23,7 +23,7 @@ export default function EventsList() {
           </div>
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="border border-slate-200 rounded-lg p-4">
+              <div key={i} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
                 <div className="space-y-3">
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
@@ -67,7 +67,7 @@ export default function EventsList() {
     <Card>
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-slate-900">활성 이벤트</h3>
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">활성 이벤트</h3>
           <Button variant="ghost" size="sm">
             전체 보기 <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
@@ -75,7 +75,7 @@ export default function EventsList() {
         
         <div className="space-y-4">
           {activeEvents.length === 0 ? (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
               활성 이벤트가 없습니다.
             </div>
           ) : (
@@ -84,18 +84,18 @@ export default function EventsList() {
               return (
                 <div
                   key={event.id}
-                  className="border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                  className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
-                      <h4 className="font-medium text-slate-900 mb-1">{event.title}</h4>
-                      <p className="text-sm text-slate-600">{event.description}</p>
+                      <h4 className="font-medium text-slate-900 dark:text-slate-100 mb-1">{event.title}</h4>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">{event.description}</p>
                       {event.submissionStoragePath && (
                         <a
                           href={`file://${event.submissionStoragePath.replace(/\\/g, '/')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-blue-600 underline mt-1"
+                          className="block text-xs text-blue-600 dark:text-blue-400 underline mt-1"
                         >
                           저장 경로 열기
                         </a>
@@ -106,14 +106,14 @@ export default function EventsList() {
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center text-slate-500">
+                    <div className="flex items-center text-slate-500 dark:text-slate-400">
                       <Clock className="h-4 w-4 mr-1" />
                       <span>
                         {format(new Date(event.deadline), 'yyyy.MM.dd HH:mm', { locale: ko })}까지
                       </span>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <span className="text-slate-600">
+                      <span className="text-slate-600 dark:text-slate-300">
                         제출: {event.submissionCount}
                       </span>
                       <Button variant="ghost" size="sm">
