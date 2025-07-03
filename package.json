@@ -4,14 +4,14 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development tsx server/index.ts",
-    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "dev": "cross-env NODE_ENV=development tsx --tsconfig=config/tsconfig.json server/index.ts",
+    "build": "vite build --config=config/vite.config.ts && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "cross-env NODE_ENV=production node dist/index.js",
-    "check": "tsc",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "check": "tsc --project config/tsconfig.json",
+    "db:generate": "drizzle-kit generate --config=config/drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=config/drizzle.config.ts",
+    "db:push": "drizzle-kit push --config=config/drizzle.config.ts",
+    "db:studio": "drizzle-kit studio --config=config/drizzle.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
